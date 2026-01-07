@@ -5,7 +5,7 @@ import type {Grade} from '../types/Grade';
 import type {ClassLevel} from '../types/ClassLevel';
 import type {ProfileType} from '../types/ProfileType';
 
-const api = axios.create({ baseURL: 'http://localhost:3000' });
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL ||'http://localhost:3000' });
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) config.headers.Authorization = `Bearer ${token}`;
