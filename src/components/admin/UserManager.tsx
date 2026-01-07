@@ -85,7 +85,7 @@ const UserManager = () => {
 
             setOpenModal(false);
             await loadData();
-        } catch (err) { alert(err.response?.data?.message || "Error while saving."); }
+        } catch (err:any) { alert(err.response?.data?.message || "Error while saving."); }
     };
 
     const handleDelete = async (id: number) => {

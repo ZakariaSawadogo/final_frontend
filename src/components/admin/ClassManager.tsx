@@ -71,7 +71,7 @@ const ClassManager = () => {
     const handleDelete = async (id: number) => {
         if(!window.confirm("Delete this class ?")) return;
         try { await Api.deleteClassLevel(id); await fetchClasses(); }
-        catch (e) { alert(e.response?.data?.message || "Impossible : Class being used."); }
+        catch (e:any) { alert(e.response?.data?.message || "Impossible : Class being used."); }
     };
 
     return (

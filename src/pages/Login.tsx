@@ -19,7 +19,7 @@ const Login = () => {
             const data = await Api.login(username, password);
             login(data.access_token, data.user);
             navigate('/dashboard');
-        } catch (err:unknown) {
+        } catch (err:any) {
             alert(err.response.data.message || 'Wrong username or password.Please retry!!');
         } finally {
             setLoading(false);
@@ -85,7 +85,7 @@ const Login = () => {
                         type="submit"
                         color="blue"
                         className="w-full mt-2 shadow-md transition-transform active:scale-95"
-                        isProcessing={loading}
+                        disabled={loading}
                     >
                         {loading ? "Connecting..." : "Connect"}
                     </Button>
