@@ -1,73 +1,101 @@
-# React + TypeScript + Vite
+# 🏫 School Management System - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is the user interface (Frontend) for the School Management System, developed as part of the **CENG 307** course. It allows administrators, teachers, and students to interact with the school database in an intuitive and secure manner.
 
-Currently, two official plugins are available:
+The project is built with **React** and **Vite**, utilizing **Tailwind CSS** and **Flowbite** for design components.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Technologies Used
 
-## React Compiler
+* **Framework:** [React](https://react.dev/) (v18+)
+* **Build Tool:** [Vite](https://vitejs.dev/)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **UI Components:** [Flowbite React](https://flowbite-react.com/)
+* **Routing:** React Router DOM
+* **HTTP Client:** Axios
+* **Icons:** React Icons (Heroicons)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+### 🔐 Authentication & Security
+* Secure Login page.
+* Session management via **JWT** (stored in LocalStorage).
+* Route protection (Automatic redirection if not logged in).
+* Role-based access control: `ADMIN`, `PROF`, `STUDENT`.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 👤 Profile Management (All Users)
+* **Collapsible Sidebar:** Optimized navigation space with a toggle button.
+* **Edit Profile:** Users can update their first name, last name, password, and profile picture directly from the interface.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🛠️ Administration Area
+* **Dashboard:** Global statistics (Total users, classes, courses).
+* **User Management:** Create, edit, delete, and search users (includes photo upload).
+* **Class Management:** Create classes with automatic name generation (e.g., "12th Grade A").
+* **Course Management:** Assign subjects and teachers to specific classes.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 📚 Teacher Area
+* **Course List:** View assigned subjects and classes.
+* **Grading System:** Tabular interface to input grades (Homework, Exams).
+* **Auto-Calculation:** Subject averages and student general averages are calculated and saved in real-time.
+* **Validation:** Prevents invalid grades (< 0 or > 20).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🎓 Student Area
+* **Report Card:** A fused view combining course details and received grades.
+* **Statistics:** Displays General Average and Status (Passed/Failed).
+* **Visual Indicators:** Color-coded badges for success or failure.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📂 Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```text
+src/
+├── assets/          # Static assets and images
+├── components/      # Reusable components
+│   ├── admin/       # Admin-specific components (UserManager, ClassManager...)
+│   ├── teacher/     # Teacher-specific components (GradeManager)
+│   ├── SidebarLayout.tsx  # Main layout with responsive sidebar
+│   └── EditProfileModal.tsx # Profile modification modal
+├── context/         # Global state management (AuthContext)
+├── helper/          # Axios configuration and API calls (api.ts)
+├── pages/           # Main views (Login, Dashboards...)
+├── types/           # TypeScript definitions (User, Course, Grade...)
+├── App.tsx          # Route configuration
+└── main.tsx         # Entry point
+````
+## ⚙️ Installation and Setup Guide
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Follow these steps to get the project running on your local machine.
+
+### 1. Prerequisites
+Make sure you have the following installed:
+* **Node.js** (v18 or higher recommended)
+* **npm** (Node Package Manager)
+
+### 2. Installation
+Open your terminal and run the following commands:
+
+```bash
+# 1. Clone the repository
+git clone <YOUR_REPOSITORY_LINK_HERE>
+
+# 2. Navigate to the frontend directory
+cd frontend
+
+# 3. Install dependencies
+npm install
+````
+### 3. Configuration (Connecting to Backend)
+Before running the app, ensure it connects to the correct Backend URL.
+
+1. Open the file: `src/helper/api.ts`
+2. Locate the `baseURL` configuration.
+3. Update it depending on your environment:
+
+```typescript
+// For Local Development:
+const api = axios.create({
+    baseURL: 'http://localhost:3000',
+});
+
+// For Production (Vercel/Netlify):
+// const api = axios.create({
+//    baseURL: '[https://your-backend-on-railway.app](https://your-backend-on-railway.app)',
+// });

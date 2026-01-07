@@ -1,36 +1,3 @@
-// import React, { useEffect, useState, useContext } from 'react';
-// import { Card, Button } from 'flowbite-react';
-// import { AuthContext } from '../../context/AuthContext';
-// import { Api } from '../../helper/api';
-// import type {Course} from '../../types/Course';
-// import GradeManager from '../../components/teacher/GradeManager';
-//
-// const TeacherDashboard = () => {
-//     const { user } = useContext(AuthContext);
-//     const [courses, setCourses] = useState<Course[]>([]);
-//     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-//
-//     useEffect(() => {
-//         if (user) Api.getCoursesByTeacher(user.id).then(setCourses);
-//     }, [user]);
-//
-//     if (selectedCourse) {
-//         return <div><Button color="light" className="mb-4" onClick={() => setSelectedCourse(null)}>← Retour</Button><GradeManager course={selectedCourse} /></div>;
-//     }
-//
-//     return (
-//         <div className="grid grid-cols-3 gap-6">
-//             {courses.map((c) => (
-//                 <Card key={c.id} className="cursor-pointer hover:bg-gray-50" onClick={() => setSelectedCourse(c)}>
-//                     <h5 className="text-xl font-bold">{c.name}</h5>
-//                     <p>{c.classLevel?.name} (Coef {c.coefficient})</p>
-//                 </Card>
-//             ))}
-//         </div>
-//     );
-// };
-// export default TeacherDashboard;
-
 import { useEffect, useState, useContext } from 'react';
 import { Card, Button, Badge } from 'flowbite-react';
 import { HiBookOpen, HiArrowLeft } from 'react-icons/hi';
