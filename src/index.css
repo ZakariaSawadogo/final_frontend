@@ -1,7 +1,7 @@
 @import "tailwindcss";
-@import "tailwindcss/preflight";
-
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
-@tailwind utilities;
-@tailwind utilities;
+
+:root { color-scheme: light; }
+html, body { background-color: #f9fafb; color: #111827; height: 100%; margin: 0; }
+input, select, textarea { background-color: #ffffff !important; color: #000000 !important; border-color: #d1d5db !important; }

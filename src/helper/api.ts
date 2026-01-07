@@ -3,94 +3,44 @@ import type {User} from '../types/User';
 import type {Course} from '../types/Course';
 import type {Grade} from '../types/Grade';
 import type {ClassLevel} from '../types/ClassLevel';
-import type {Bulletin} from '../types/Bulletin';
 import type {ProfileType} from '../types/ProfileType';
 
-// Configuration de base Axios
-const api = axios.create({
-    baseURL: 'http://localhost:3000', // Ton Backend NestJS
-});
-
-// Intercepteur pour ajouter le Token JWT automatiquement à chaque requête
+const api = axios.create({ baseURL: 'http://localhost:3000' });
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
 
 export const Api = {
-    // --- AUTHENTIFICATION ---
-    login: async (username: string, password: string) => {
-        const { data } = await api.post('/auth/login', { username, password });
-        return data;
-    },
+    login: async (u: string, p: string) => (await api.post('/auth/login', { username: u, password: p })).data,
 
-    // --- UTILISATEURS (Admin) ---
-    getAllUsers: async () => {
-        const { data } = await api.get<User[]>('/users');
-        return data;
-    },
-    createUser: async (user: Partial<User>) => {
-        const { data } = await api.post<User>('/users', user);
-        return data;
-    },
+    // USERS
+    getAllUsers: async () => (await api.get<User[]>('/users')).data,
+    createUser: async (fd: FormData) => (await api.post<User>('/users', fd)).data,
+    updateUser: async (id: number, fd: FormData) => (await api.patch<User>(`/users/${id}`, fd)).data,
+    deleteUser: async (id: number) => (await api.delete(`/users/${id}`)).data,
 
-    // --- RÔLES & CLASSES (Config) ---
-    getProfileTypes: async () => {
-        const { data } = await api.get<ProfileType[]>('/profile-types');
-        return data;
-    },
-    getClassLevels: async () => {
-        const { data } = await api.get<ClassLevel[]>('/class-levels');
-        return data;
-    },
-    createClassLevel: async (name: string, level: number) => {
-        const { data } = await api.post<ClassLevel>('/class-levels', { name, level });
-        return data;
-    },
+    // CONFIG
+    getProfileTypes: async () => (await api.get<ProfileType[]>('/profile-types')).data,
 
-    // --- COURS (Matières) ---
-    getAllCourses: async () => {
-        const { data } = await api.get<Course[]>('/courses');
-        return data;
-    },
-    createCourse: async (course: Partial<Course>) => {
-        // On attend { name, coefficient, classLevelId, teacherId }
-        const { data } = await api.post<Course>('/courses', course);
-        return data;
-    },
-    getCoursesByTeacher: async (teacherId: number) => {
-        const { data } = await api.get<Course[]>(`/courses/teacher/${teacherId}`);
-        return data;
-    },
+    // CLASSES
+    getClassLevels: async () => (await api.get<ClassLevel[]>('/class-levels')).data,
+    createClassLevel: async (name: string, level: number) => (await api.post('/class-levels', { name, level })).data,
+    updateClassLevel: async (id: number, name: string, level: number) => (await api.patch(`/class-levels/${id}`, { name, level })).data,
+    deleteClassLevel: async (id: number) => (await api.delete(`/class-levels/${id}`)).data,
 
-    // --- NOTES (Grades) ---
-    initializeGrade: async (studentId: number, courseId: number, term: string) => {
-        const { data } = await api.post<Grade>('/grades/initialize', { studentId, courseId, term });
-        return data;
-    },
-    updateGrade: async (id: number, notes: { devoir1?: number; devoir2?: number; composition?: number }) => {
-        const { data } = await api.patch<Grade>(`/grades/${id}`, notes);
-        return data;
-    },
-    getGradesByStudent: async (studentId: number) => {
-        const { data } = await api.get<Grade[]>(`/grades/student/${studentId}`);
-        return data;
-    },
+    // COURSES
+    getAllCourses: async () => (await api.get<Course[]>('/courses')).data,
+    getCoursesByTeacher: async (id: number) => (await api.get<Course[]>(`/courses/teacher/${id}`)).data,
+    getCoursesByClass: async (id: number) => (await api.get<Course[]>(`/courses/class/${id}`)).data,
+    createCourse: async (c: Partial<Course>) => (await api.post('/courses', c)).data,
+    updateCourse: async (id: number, c: Partial<Course>) => (await api.patch(`/courses/${id}`, c)).data,
+    deleteCourse: async (id: number) => (await api.delete(`/courses/${id}`)).data,
 
-    // --- BULLETINS ---
-    generateBulletin: async (studentId: number, term: string) => {
-        const { data } = await api.post<Bulletin>('/bulletins/generate', { studentId, term });
-        return data;
-    },
-    getBulletinsByStudent: async (studentId: number) => {
-        const { data } = await api.get<Bulletin[]>(`/bulletins/student/${studentId}`);
-        return data;
-    },
-    getAnnualResult: async (studentId: number) => {
-        const { data } = await api.get(`/bulletins/annual-result/${studentId}`);
-        return data;
-    }
+    // GRADES
+    initializeGrade: async (sid: number, cid: number) => (await api.post<Grade>('/grades/initialize', { studentId: sid, courseId: cid })).data,
+    updateGrade: async (id: number, notes: any) => (await api.patch<Grade>(`/grades/${id}`, notes)).data,
+    getGradesByStudent: async (id: number) => (await api.get<Grade[]>(`/grades/student/${id}`)).data,
+    getStudentGeneralAverage: async (id: number) => (await api.get<{general_average: number}>(`/grades/result/${id}`)).data,
 };

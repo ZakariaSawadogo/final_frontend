@@ -1,6 +1,5 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, type ReactNode } from 'react';
 import type {User} from '../types/User';
-import { Api } from '../helper/api';
 
 interface AuthContextType {
     user: User | null;
@@ -16,7 +15,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
-    // Au chargement, on vérifie si un token existe déjà
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (token && storedUser) {
@@ -36,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem('user');
         setToken(null);
         setUser(null);
-        window.location.href = '/login'; // Redirection forcée
+        window.location.href = '/login';
     };
 
     return (
