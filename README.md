@@ -1,6 +1,6 @@
 # 🏫 School Management System - Frontend
 
-This project is the user interface (Frontend) for the School Management System, developed as part of the **CENG 307** course. It allows administrators, teachers, and students to interact with the school database in an intuitive and secure manner.
+This project is the user interface (Frontend) for the School Management System, developed for my **Web technologies** course. It allows administrators, teachers, and students to interact with the school database in an intuitive and secure manner.
 
 The project is built with **React** and **Vite**, utilizing **Tailwind CSS** and **Flowbite** for design components.
 
